@@ -1,0 +1,126 @@
+{
+  "rules": [
+    {
+      "id": "hf_assignment_rule",
+      "description": "Identify assignment email and mark as action required",
+      "collection_predicate": "all",
+      "conditions": [
+        {
+          "field": "from_email",
+          "predicate": "contains",
+          "value": "kruthikbv4@gmail.com"
+        },
+        {
+          "field": "subject",
+          "predicate": "contains",
+          "value": "assignment"
+        },
+        {
+          "field": "message",
+          "predicate": "contains",
+          "value": "please finish"
+        }
+      ],
+      "actions": [
+        "mark_unread",
+        "move_message:HAPPYFOX_ASSIGNMENT"
+      ]
+    },
+
+    {
+      "id": "hf_interview_related",
+      "description": "Interview related emails — move but keep in inbox",
+      "collection_predicate": "any",
+      "conditions": [
+        {
+          "field": "subject",
+          "predicate": "contains",
+          "value": "interview"
+        },
+        {
+          "field": "message",
+          "predicate": "contains",
+          "value": "meet"
+        }
+      ],
+      "actions": [
+        "move_message_keep_inbox:HAPPYFOX_INTERVIEW"
+      ]
+    },
+
+    {
+      "id": "hf_calendar_confirmation",
+      "description": "Calendar confirmation email only when subject contains 'confirmed'",
+      "collection_predicate": "all",
+      "conditions": [
+        {
+          "field": "subject",
+          "predicate": "contains",
+          "value": "confirmed"
+        },
+        {
+          "field": "from_email",
+          "predicate": "contains",
+          "value": "kruthikbv4@gmail.com"
+        }
+      ],
+      "actions": [
+        "move_message_keep_inbox:HAPPYFOX_CALENDAR"
+      ]
+    },
+
+    {
+      "id": "hf_application_ack",
+      "description": "Application acknowledgement email — mark as read",
+      "collection_predicate": "any",
+      "conditions": [
+        {
+          "field": "subject",
+          "predicate": "contains",
+          "value": "thank you for your application"
+        },
+        {
+          "field": "message",
+          "predicate": "contains",
+          "value": "acknowledge"
+        }
+      ],
+      "actions": [
+        "mark_read",
+        "move_message:HAPPYFOX_APPLICATION"
+      ]
+    },
+
+    {
+      "id": "hf_old_emails_cleanup",
+      "description": "Move emails older than 30 days to ARCHIVE label",
+      "collection_predicate": "all",
+      "conditions": [
+        {
+          "field": "received_datetime",
+          "predicate": "older_than_days",
+          "value": 30
+        }
+      ],
+      "actions": [
+        "move_message:ARCHIVE"
+      ]
+    },
+
+    {
+      "id": "hf_recent_important",
+      "description": "Highlight very recent emails (received within last 2 days)",
+      "collection_predicate": "any",
+      "conditions": [
+        {
+          "field": "received_datetime",
+          "predicate": "newer_than_days",
+          "value": 2
+        }
+      ],
+      "actions": [
+        "move_message_keep_inbox:RECENT_IMPORTANT"
+      ]
+    }
+  ]
+}
